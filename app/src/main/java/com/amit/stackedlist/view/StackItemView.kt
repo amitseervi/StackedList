@@ -13,33 +13,85 @@ class StackItemView @JvmOverloads constructor(
     private var mCollapsedChildView: CollapsedViewContainer? = null
     private var mExpandedChildView: ExpandedViewContainer? = null
     private var mIsVisible: Boolean = false
+    private var mIsExpanded: Boolean = false
     val measuredCollapsedHeight: Int
         get() = mCollapsedChildView.let {
             it?.measuredHeight ?: 0
         }
-    val measuredExpandedHeight: Int
-        get() = mExpandedChildView.let {
-            it?.measuredHeight ?: 0
-        }
-    val isVisible: Boolean
-        get() = mIsVisible
 
-    init {
+    fun setState(visible: Boolean, expanded: Boolean) {
+        mIsVisible = visible
+        mIsExpanded = expanded
+
+        mExpandedChildView?.let { v ->
+            if (visible && expanded) {
+                v.visibility = View.VISIBLE
+            } else {
+                v.visibility = View.GONE
+            }
+        }
+
+        mCollapsedChildView?.let { v ->
+            if (visible && !expanded) {
+                v.visibility = View.VISIBLE
+            } else {
+                v.visibility = View.GONE
+            }
+        }
+    }
+
+    fun showCollapsedView() {
+        mCollapsedChildView?.visibility = View.VISIBLE
+    }
+
+    fun showExpandedView() {
+        mExpandedChildView?.visibility = View.VISIBLE
+    }
+
+    fun hideCollapsedView() {
+        mCollapsedChildView?.visibility = View.GONE
+    }
+
+    fun hideExpandedView() {
+        mExpandedChildView?.visibility = View.GONE
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        val leftPosition = paddingLeft
+        val rightPosition = r - l - paddingRight
+        val topPosition = paddingTop
+        val bottomPosition = b - t - paddingBottom
+        if (leftPosition > rightPosition) {
+            return
+        }
+        if (topPosition > bottomPosition) {
+            return
+        }
 
+        mExpandedChildView?.let { expandedViewContainer ->
+            expandedViewContainer.layout(
+                leftPosition,
+                topPosition,
+                leftPosition + expandedViewContainer.measuredWidth,
+                topPosition + expandedViewContainer.measuredHeight
+            )
+        }
+        mCollapsedChildView?.let { collapsedViewContainer ->
+            collapsedViewContainer.layout(
+                leftPosition, topPosition,
+                leftPosition + collapsedViewContainer.measuredWidth,
+                topPosition + collapsedViewContainer.measuredWidth
+            )
+        }
     }
 
-    override fun onViewAdded(child: View?) {
-        super.onViewAdded(child)
+    override fun onFinishInflate() {
+        super.onFinishInflate()
         mCollapsedChildView = children.filterIsInstance<CollapsedViewContainer>().firstOrNull()
         mExpandedChildView = children.filterIsInstance<ExpandedViewContainer>().firstOrNull()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        mCollapsedChildView = children.filterIsInstance<CollapsedViewContainer>().firstOrNull()
-        mExpandedChildView = children.filterIsInstance<ExpandedViewContainer>().firstOrNull()
         if (mExpandedChildView == null) {
             throw RuntimeException("Expanded Child can not be null")
         }
@@ -59,19 +111,54 @@ class StackItemView @JvmOverloads constructor(
         } else {
             0
         }
-        mExpandedChildView?.measure(widthMeasureSpec, heightMeasureSpec)
+
+        val horizontalPadding = paddingRight + paddingLeft
+        val verticalPadding = paddingTop + paddingBottom
+        mExpandedChildView?.measure(
+            MeasureSpec.makeMeasureSpec(
+                maxOf(
+                    widthSize - horizontalPadding,
+                    0
+                ), MeasureSpec.EXACTLY
+            ),
+            MeasureSpec.makeMeasureSpec(
+                maxOf(
+                    heightSize - verticalPadding,
+                    0
+                ), MeasureSpec.EXACTLY
+            ),
+        )
         mCollapsedChildView?.measure(
-            widthMeasureSpec,
+            MeasureSpec.makeMeasureSpec(
+                maxOf(
+                    widthSize - horizontalPadding,
+                    0
+                ), MeasureSpec.EXACTLY
+            ),
             MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         )
         setMeasuredDimension(selectedWidth, selectedHeight)
     }
 
-    fun onLayoutCollapsedView(l: Int, t: Int, r: Int, b: Int) {
-        mCollapsedChildView?.layout(l, t, r, b)
-    }
-
-    fun onLayoutExpandView(l: Int, t: Int, r: Int, b: Int) {
-        mExpandedChildView?.layout(l, t, r, b)
+    fun setAnimationValue(v: Float) {
+        val collapsedAlpha: Float
+        val expandedAlpha: Float
+        val translationYFactor: Float
+        if (v > 1) {
+            collapsedAlpha = v - 1f
+            expandedAlpha = 2f - v
+            translationYFactor = 0f // keep it at the top
+        } else {
+            collapsedAlpha = 0f
+            expandedAlpha = v
+            translationYFactor = 1f - v
+        }
+        mCollapsedChildView?.let { collapsedViewContainer ->
+            collapsedViewContainer.alpha = collapsedAlpha
+        }
+        mExpandedChildView?.let { expandedViewContainer ->
+            expandedViewContainer.alpha = expandedAlpha
+        }
+        this.translationY = measuredHeight * translationYFactor
     }
 }
