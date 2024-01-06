@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingVertical="24dp"
+    tools:background="@color/black">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/g1"
@@ -24,40 +26,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="12dp" />
+        app:layout_constraintGuide_begin="0dp" />
 
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/credit_amount_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="18sp"
+        android:text="@string/credit_amount"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@id/g1"
-        app:layout_constraintTop_toBottomOf="@id/g3"
-        tools:text="Credit Amount " />
+        app:layout_constraintTop_toBottomOf="@id/g3" />
 
     <TextView
         android:id="@+id/credit_amount_value"
+        style="@style/TextAppearance.AppCompat.Display1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@id/g1"
         app:layout_constraintTop_toBottomOf="@id/credit_amount_label"
         tools:text="$200" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/expand_section"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:background="@drawable/bg_drop_down_button"
+        android:importantForAccessibility="no"
         android:src="@drawable/ic_arrow_down"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/g2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/white"
-        android:importantForAccessibility="no" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

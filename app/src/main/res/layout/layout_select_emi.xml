@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:background="@color/black">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/g1"
@@ -24,77 +25,249 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="200dp" />
+        app:layout_constraintGuide_begin="24dp" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
+        style="@style/TextAppearance.AppCompat.Display1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:includeFontPadding="false"
+        android:paddingHorizontal="24dp"
         android:text="@string/credit_select_title"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/g2"
         app:layout_constraintStart_toStartOf="@+id/g1"
         app:layout_constraintTop_toTopOf="@id/g3"
         tools:text="How much do you need?" />
 
-    <TextView
-        android:id="@+id/seeker_start_label"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/credit_input_tv"
+        style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/seeker"
-        app:layout_constraintStart_toStartOf="@id/g1"
-        app:layout_constraintTop_toTopOf="@+id/seeker"
-        tools:text="$100" />
-
-    <TextView
-        android:id="@+id/seeker_end_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/seeker"
-        app:layout_constraintEnd_toEndOf="@id/g2"
-        app:layout_constraintTop_toTopOf="@+id/seeker"
-        tools:text="$100000" />
-
-
-    <SeekBar
-        android:id="@+id/seeker"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toStartOf="@id/seeker_end_label"
-        app:layout_constraintStart_toEndOf="@id/seeker_start_label"
+        android:background="@drawable/credit_input_amount_background"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="8dp"
+        android:text="$ 1,00,000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/g2"
+        app:layout_constraintStart_toStartOf="@id/g1"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <TextView
-        android:id="@+id/credit_amount_label"
+    <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/credit_amount"
-        android:textColor="@color/black"
-        android:textSize="18sp"
+        android:columnCount="3"
+        app:layout_constraintEnd_toEndOf="@id/g2"
         app:layout_constraintStart_toStartOf="@id/g1"
-        app:layout_constraintTop_toBottomOf="@id/seeker" />
+        app:layout_constraintTop_toBottomOf="@+id/credit_input_tv">
 
-    <TextView
-        android:id="@+id/credit_amount_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/credit_amount_label"
-        app:layout_constraintStart_toEndOf="@id/credit_amount_label"
-        app:layout_constraintTop_toTopOf="@id/credit_amount_label"
-        tools:text="$200" />
+        <FrameLayout
+            android:id="@+id/number_1"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/input_number_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="@string/_1"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/number_2"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/input_number_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="@string/_2"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/number_3"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/input_number_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="@string/_3"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/number_4"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/input_number_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="@string/_4"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/number_5"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/input_number_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="@string/_5"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/number_6"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/input_number_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="@string/_6"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/number_7"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/input_number_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="@string/_7"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/number_8"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/input_number_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="@string/_8"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/number_9"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/input_number_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="@string/_9"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/number_0"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_column="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/input_number_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:text="@string/_0"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/back_space"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_column="2"
+            android:layout_margin="4dp"
+            android:background="@drawable/input_number_background">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_gravity="center"
+                android:src="@drawable/back_space"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+
+    </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

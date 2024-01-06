@@ -3,6 +3,7 @@ package com.amit.stackedlist.view
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.animation.doOnEnd
@@ -15,6 +16,7 @@ class StackContainer @JvmOverloads constructor(
     private val stackItems: MutableList<StackItemView> = mutableListOf()
     private var mCurrentAnimator: ValueAnimator? = null
     private var mCurrentItemIndex = 0
+
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val leftPosition = paddingLeft
         val rightPosition = r - l - paddingRight
@@ -70,6 +72,32 @@ class StackContainer @JvmOverloads constructor(
         }
         animator.start()
         return true
+    }
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        if (ev == null) {
+            return super.onInterceptTouchEvent(ev)
+        }
+        val currentView = stackItems.getOrNull(mCurrentItemIndex) ?: return false
+        val currentViewHeight = currentView.measuredHeight
+        if (ev.y >= measuredHeight - currentViewHeight) {
+            println("Touch are in visible child")
+            return false
+        }
+        return true
+    }
+
+    override fun onTouchEvent(ev: MotionEvent?): Boolean {
+        ev ?: return false
+        val currentView = stackItems.getOrNull(mCurrentItemIndex) ?: return false
+        val currentViewHeight = currentView.measuredHeight
+        if (ev.y >= measuredHeight - currentViewHeight) {
+            return false
+        }
+        if (ev.action == MotionEvent.ACTION_DOWN) {
+            showPreviousChild()
+            return true
+        }
+        return false
     }
 
     fun showPreviousChild(): Boolean {

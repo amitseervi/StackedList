@@ -14,6 +14,7 @@ class StackItemView @JvmOverloads constructor(
     private var mExpandedChildView: ExpandedViewContainer? = null
     private var mIsVisible: Boolean = false
     private var mIsExpanded: Boolean = false
+    private var mStackCallback: Callback? = null
     val measuredCollapsedHeight: Int
         get() = mCollapsedChildView.let {
             it?.measuredHeight ?: 0
@@ -167,14 +168,32 @@ class StackItemView @JvmOverloads constructor(
     }
 
     fun onCollapsed() {
-
+        mStackCallback?.onStackCollapsed()
     }
 
     fun onExpanded() {
-
+        mStackCallback?.onStackExpanded()
     }
 
     fun onHidden() {
+        mStackCallback?.onStackHidden()
+    }
 
+    fun setCallback(callback: Callback?) {
+        mStackCallback = callback
+    }
+
+    interface Callback {
+        fun onStackCollapsed() {
+
+        }
+
+        fun onStackExpanded() {
+
+        }
+
+        fun onStackHidden() {
+
+        }
     }
 }
