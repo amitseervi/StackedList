@@ -155,9 +155,13 @@ class StackItemView @JvmOverloads constructor(
         }
         mCollapsedChildView?.let { collapsedViewContainer ->
             collapsedViewContainer.alpha = collapsedAlpha
+            if (v >= 1f) {
+                collapsedViewContainer.onAnimate(collapsedAlpha)
+            }
         }
         mExpandedChildView?.let { expandedViewContainer ->
             expandedViewContainer.alpha = expandedAlpha
+            expandedViewContainer.onAnimate(expandedAlpha)
         }
         this.translationY = measuredHeight * translationYFactor
     }

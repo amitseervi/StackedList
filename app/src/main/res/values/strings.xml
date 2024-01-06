@@ -43,4 +43,7 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="credit_select_title">How much do you need?</string>
+    <string name="dollar_value">$%1$s</string>
+    <string name="credit_amount">Credit Amount</string>
 </resources>

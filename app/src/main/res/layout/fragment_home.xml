@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.amit.stackedlist.view.StackItemView
+            android:id="@+id/stack_item_1"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -23,30 +24,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <include
+                    android:id="@+id/collapsed_emi_select"
+                    layout="@layout/layout_selected_emi"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Hello world 1"
-                    android:textSize="28sp" />
+                    android:layout_height="wrap_content" />
             </com.amit.stackedlist.view.CollapsedViewContainer>
 
             <com.amit.stackedlist.view.ExpandedViewContainer
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <include
+                    android:id="@+id/expanded_emi_select"
+                    layout="@layout/layout_select_emi"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Expanded content of hello world 1"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="match_parent" />
             </com.amit.stackedlist.view.ExpandedViewContainer>
         </com.amit.stackedlist.view.StackItemView>
 

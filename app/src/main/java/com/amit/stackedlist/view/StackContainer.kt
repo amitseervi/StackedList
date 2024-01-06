@@ -13,7 +13,7 @@ class StackContainer @JvmOverloads constructor(
 ) : ViewGroup(context, attrs, defStyleAttr) {
     private val stackItems: MutableList<StackItemView> = mutableListOf()
     private var mCurrentAnimator: ValueAnimator? = null
-    private var mCurrentItemIndex = 2
+    private var mCurrentItemIndex = 0
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val leftPosition = paddingLeft
         val rightPosition = r - l - paddingRight
@@ -37,14 +37,14 @@ class StackContainer @JvmOverloads constructor(
         }
     }
 
-    fun showNextChild() {
+    fun showNextChild(): Boolean {
         val currentIndex = mCurrentItemIndex
         if (currentIndex + 1 == stackItems.size) {
-            return
+            return false
         }
         mCurrentAnimator?.let { currentAnimator ->
             if (currentAnimator.isRunning) {
-                return
+                return false
             }
         }
         val animator = ValueAnimator.ofFloat(0f, 1f)
@@ -65,16 +65,17 @@ class StackContainer @JvmOverloads constructor(
             mCurrentItemIndex = currentIndex + 1
         }
         animator.start()
+        return true
     }
 
-    fun showPreviousChild() {
+    fun showPreviousChild(): Boolean {
         val currentIndex = mCurrentItemIndex
         if (currentIndex == 0) {
-            return
+            return false
         }
         mCurrentAnimator?.let { currentAnimator ->
             if (currentAnimator.isRunning) {
-                return
+                return false
             }
         }
         val animator = ValueAnimator.ofFloat(1f, 0f)
@@ -94,6 +95,7 @@ class StackContainer @JvmOverloads constructor(
             mCurrentItemIndex = currentIndex - 1
         }
         animator.start()
+        return true
     }
 
     override fun onFinishInflate() {
