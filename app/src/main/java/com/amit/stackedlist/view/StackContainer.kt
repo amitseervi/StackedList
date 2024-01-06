@@ -9,13 +9,25 @@ import android.view.ViewGroup
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.view.children
+import com.amit.stackedlist.R
 
 class StackContainer @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr) {
     private val stackItems: MutableList<StackItemView> = mutableListOf()
+    private var animationDuration: Long
     private var mCurrentAnimator: ValueAnimator? = null
     private var mCurrentItemIndex = 0
+
+    init {
+        val typedArray =
+            context.theme.obtainStyledAttributes(attrs, R.styleable.StackItemView, 0, 0)
+        animationDuration = try {
+            typedArray.getInteger(R.styleable.StackItemView_stackAnimationDuration, 500).toLong()
+        } catch (e: Exception) {
+            500
+        }
+    }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val leftPosition = paddingLeft
@@ -52,7 +64,7 @@ class StackContainer @JvmOverloads constructor(
         }
         val animator = ValueAnimator.ofFloat(0f, 1f)
         mCurrentAnimator = animator
-        animator.duration = 1000
+        animator.duration = animationDuration
         animator.addUpdateListener {
             val animationValue: Float = it.animatedValue as Float
             stackItems[currentIndex].setAnimationValue(1f + animationValue)
@@ -73,6 +85,7 @@ class StackContainer @JvmOverloads constructor(
         animator.start()
         return true
     }
+
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
         if (ev == null) {
             return super.onInterceptTouchEvent(ev)
@@ -112,7 +125,7 @@ class StackContainer @JvmOverloads constructor(
         }
         val animator = ValueAnimator.ofFloat(1f, 0f)
         mCurrentAnimator = animator
-        animator.duration = 1000
+        animator.duration = animationDuration
         animator.addUpdateListener {
             val animationValue: Float = it.animatedValue as Float
             stackItems[currentIndex].setAnimationValue(animationValue)

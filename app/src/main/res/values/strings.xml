@@ -25,5 +25,10 @@
     <string name="rupee_symbol">\u20B9</string>
     <string name="select_your_bank_account">Select your bank account</string>
     <string name="tap_for_kyc">Tap for 1 click KYC</string>
+    <string name="emi_per_month_duration">for %s months</string>
+    <string name="per_month_amount">%s /mo</string>
+    <string name="check_details">Check Details</string>
+    <string name="not_implemented">Not Implemented</string>
+    <string name="na">NA</string>
 
 </resources>

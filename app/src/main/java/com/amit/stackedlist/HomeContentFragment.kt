@@ -5,15 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.amit.stackedlist.adapter.EmiRateOptionAdapter
 import com.amit.stackedlist.databinding.FragmentHomeBinding
+import com.amit.stackedlist.model.ui.EmiRateOptionPresentationItem
+import com.amit.stackedlist.repository.DummyEmiRateOptionRepository
 import com.amit.stackedlist.view.StackItemView
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class HomeContentFragment : Fragment() {
+class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var factory: HomeViewModel.Factory
     private val viewModel: HomeViewModel by lazy {
@@ -34,9 +38,11 @@ class HomeContentFragment : Fragment() {
 
     private val stackCallbackBankAccountSelect = object : StackItemView.Callback {
         override fun onStackExpanded() {
-            viewModel.onBankAccountSelectSetionVisible()
+            viewModel.onBankAccountSelectSectionVisible()
         }
     }
+
+    private lateinit var emiOptionAdapter: EmiRateOptionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +55,10 @@ class HomeContentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        factory = HomeViewModel.Factory(requireContext().applicationContext as Application)
+        factory = HomeViewModel.Factory(
+            requireContext().applicationContext as Application,
+            DummyEmiRateOptionRepository()
+        )
         binding.ctaButton.setOnClickListener {
             binding.stackContainer.showNextChild()
         }
@@ -59,6 +68,15 @@ class HomeContentFragment : Fragment() {
         observeCtaMessage()
         observeCtaEnableState()
         bindStackCallbacks()
+        bindEmiOptionRateAdapter()
+        observeEmiRateOptionList()
+        observeEmiSelectedRateOption()
+    }
+
+
+    private fun bindEmiOptionRateAdapter() {
+        emiOptionAdapter = EmiRateOptionAdapter(this)
+        binding.expandedEmiOptionSelect.recyclerViewPayOptions.adapter = emiOptionAdapter
     }
 
     private fun observeCreditSelection() {
@@ -82,6 +100,28 @@ class HomeContentFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.ctaButtonEnabled.collectLatest {
                 binding.ctaButton.isEnabled = it
+            }
+        }
+    }
+
+    private fun observeEmiRateOptionList() {
+        lifecycleScope.launch {
+            viewModel.emiRateOptionList.collectLatest {
+                emiOptionAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun observeEmiSelectedRateOption() {
+        lifecycleScope.launch {
+            viewModel.emiRateSelectedOption.collectLatest {
+                if (it == null) {
+                    binding.collapsedEmiOptionSelect.emiValue.text = getString(R.string.na)
+                    binding.collapsedEmiOptionSelect.durationValue.text = getString(R.string.na)
+                } else {
+                    binding.collapsedEmiOptionSelect.emiValue.text = it.amountPerMonth
+                    binding.collapsedEmiOptionSelect.durationValue.text = it.duration
+                }
             }
         }
     }
@@ -126,5 +166,13 @@ class HomeContentFragment : Fragment() {
         binding.stackItem1.setCallback(stackCallbackEmiCreditSelect)
         binding.stackItem2.setCallback(stackCallbackEmiRateSelect)
         binding.stackItem3.setCallback(stackCallbackBankAccountSelect)
+    }
+
+    override fun onSelected(selectedOption: EmiRateOptionPresentationItem) {
+        viewModel.onEmiRateOptionSelected(selectedOption)
+    }
+
+    override fun onClickDetail(selectedOption: EmiRateOptionPresentationItem) {
+        Toast.makeText(context, getString(R.string.not_implemented), Toast.LENGTH_SHORT).show()
     }
 }

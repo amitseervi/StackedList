@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <declare-styleable name="StackItemView">-->
-<!--        <attr name="itemOrder" format="integer" />-->
-<!--    </declare-styleable>-->
+    <declare-styleable name="StackItemView">
+        <attr name="stackAnimationDuration" format="integer" />
+    </declare-styleable>
 </resources>
