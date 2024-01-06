@@ -3,6 +3,7 @@ package com.amit.stackedlist.view
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
@@ -58,10 +59,13 @@ class StackContainer @JvmOverloads constructor(
         animator.doOnStart {
             stackItems[currentIndex + 1].showExpandedView()
             stackItems[currentIndex].showCollapsedView()
+            stackItems[currentIndex + 1].visibility = View.VISIBLE
         }
         animator.doOnEnd {
             stackItems[currentIndex].hideExpandedView()
             stackItems[currentIndex + 1].hideCollapsedView()
+            stackItems[currentIndex].onCollapsed()
+            stackItems[currentIndex + 1].onExpanded()
             mCurrentItemIndex = currentIndex + 1
         }
         animator.start()
@@ -92,6 +96,9 @@ class StackContainer @JvmOverloads constructor(
         animator.doOnEnd {
             stackItems[currentIndex - 1].hideCollapsedView()
             stackItems[currentIndex].hideExpandedView()
+            stackItems[currentIndex].visibility = View.GONE
+            stackItems[currentIndex].onHidden()
+            stackItems[currentIndex - 1].onExpanded()
             mCurrentItemIndex = currentIndex - 1
         }
         animator.start()
@@ -102,6 +109,9 @@ class StackContainer @JvmOverloads constructor(
         super.onFinishInflate()
         stackItems.clear()
         stackItems.addAll(children.filterIsInstance<StackItemView>())
+        for (i in 1 until stackItems.size) {
+            stackItems[i].visibility = View.GONE
+        }
         applyStateToChild()
     }
 

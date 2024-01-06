@@ -165,4 +165,16 @@ class StackItemView @JvmOverloads constructor(
         }
         this.translationY = measuredHeight * translationYFactor
     }
+
+    fun onCollapsed() {
+
+    }
+
+    fun onExpanded() {
+
+    }
+
+    fun onHidden() {
+
+    }
 }

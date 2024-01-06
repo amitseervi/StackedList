@@ -46,4 +46,7 @@
     <string name="credit_select_title">How much do you need?</string>
     <string name="dollar_value">$%1$s</string>
     <string name="credit_amount">Credit Amount</string>
+    <string name="how_do_you_wish_to_pay">How do you wish to pay?</string>
+    <string name="where_should_we_send_the_money">Where should we send the money?</string>
+    <string name="proceed_to_emi_option">Proceed to Emi Options</string>
 </resources>

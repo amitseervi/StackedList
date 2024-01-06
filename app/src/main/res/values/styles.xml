@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="stack_item_style">
+
+    </style>
+
+    <style name="stack_item_style_1" parent="stack_item_style">
+        <item name="android:background">@drawable/stack_item_background_1</item>
+    </style>
+
+    <style name="stack_item_style_2" parent="stack_item_style">
+        <item name="android:background">@drawable/stack_item_background_2</item>
+    </style>
+
+    <style name="stack_item_style_3" parent="stack_item_style">
+        <item name="android:background">@drawable/stack_item_background_3</item>
+    </style>
+
+    <style name="stack_item_style_4" parent="stack_item_style">
+        <item name="android:background">@drawable/stack_item_background_4</item>
+    </style>
+</resources>

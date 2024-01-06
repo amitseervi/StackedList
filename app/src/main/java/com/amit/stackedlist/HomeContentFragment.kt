@@ -32,11 +32,8 @@ class HomeContentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         factory = HomeViewModel.Factory(requireContext().applicationContext as Application)
-        binding.ctaShowNextStack.setOnClickListener {
+        binding.ctaButton.setOnClickListener {
             binding.stackContainer.showNextChild()
-        }
-        binding.ctaShowPreviousStack.setOnClickListener {
-            binding.stackContainer.showPreviousChild()
         }
 
         bindCreditExpandedView()
