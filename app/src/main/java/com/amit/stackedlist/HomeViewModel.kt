@@ -19,8 +19,6 @@ import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.Currency
 
-private const val INTEREST_MULTIPLIER = 1.2f
-
 class HomeViewModel(
     private val application: Application,
     private val emiRateOptionRepository: EmiRateOptionsRepository
