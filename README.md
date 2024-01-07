@@ -2,6 +2,8 @@
 ## Overview
 This simple demo application illustrates a stacked list behavior with two states: collapsed and expanded. In this implementation, when the next item in the stack becomes visible, the previous items are displayed as collapsed. Furthermore, clicking on any collapsed item expands it, hiding the other items. 
 
+[![Watch the video](https://github.com/amitseervi/StackedList/blob/main/art/000.png)](https://github.com/amitseervi/StackedList/blob/main/art/recording.mp4)
+
 ## Features
 - Stacked list view with collapsed and expanded states.
 - Smooth transition animations between states.
@@ -64,13 +66,13 @@ open the application code in your Android studio. click on run.
 for the last item in the stackContainer collapsedState view is optional and can be skipped.
 
 ## Art
-![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/000.png)
-![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/001.png)
-![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/002.png)
-![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/003.png)
-![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/004.png)
-![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/005.png)
-![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/006.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/000.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/001.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/002.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/003.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/004.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/005.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/006.png)
 
 
 ## Guidelines
