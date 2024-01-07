@@ -1,6 +1,6 @@
 package com.amit.stackedlist.repository
 
-import com.amit.stackedlist.model.ui.EmiRateOptionItem
+import com.amit.stackedlist.model.EmiRateOptionItem
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 

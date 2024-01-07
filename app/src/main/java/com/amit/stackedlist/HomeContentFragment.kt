@@ -9,15 +9,19 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.amit.stackedlist.adapter.BankAccountOptionAdapter
 import com.amit.stackedlist.adapter.EmiRateOptionAdapter
 import com.amit.stackedlist.databinding.FragmentHomeBinding
 import com.amit.stackedlist.model.ui.EmiRateOptionPresentationItem
+import com.amit.stackedlist.model.ui.UserBankAccountItemPresentation
 import com.amit.stackedlist.repository.DummyEmiRateOptionRepository
+import com.amit.stackedlist.repository.DummyUserBankAccountRepository
 import com.amit.stackedlist.view.StackItemView
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback {
+class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback,
+    BankAccountOptionAdapter.ViewHolderCallback {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var factory: HomeViewModel.Factory
     private val viewModel: HomeViewModel by lazy {
@@ -43,6 +47,7 @@ class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback 
     }
 
     private lateinit var emiOptionAdapter: EmiRateOptionAdapter
+    private lateinit var bankAccountOptionAdapter: BankAccountOptionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +62,8 @@ class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback 
         super.onViewCreated(view, savedInstanceState)
         factory = HomeViewModel.Factory(
             requireContext().applicationContext as Application,
-            DummyEmiRateOptionRepository()
+            DummyEmiRateOptionRepository(),
+            DummyUserBankAccountRepository()
         )
         binding.ctaButton.setOnClickListener {
             binding.stackContainer.showNextChild()
@@ -69,14 +75,22 @@ class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback 
         observeCtaEnableState()
         bindStackCallbacks()
         bindEmiOptionRateAdapter()
+        bindUserBankAccountAdapter()
         observeEmiRateOptionList()
+        observeBankAccountOptionList()
         observeEmiSelectedRateOption()
+        bindAddBankAccountCta()
     }
 
 
     private fun bindEmiOptionRateAdapter() {
         emiOptionAdapter = EmiRateOptionAdapter(this)
         binding.expandedEmiOptionSelect.recyclerViewPayOptions.adapter = emiOptionAdapter
+    }
+
+    private fun bindUserBankAccountAdapter() {
+        bankAccountOptionAdapter = BankAccountOptionAdapter(this)
+        binding.expandedSelectBankAccount.bankAccountsRv.adapter = bankAccountOptionAdapter
     }
 
     private fun observeCreditSelection() {
@@ -108,6 +122,14 @@ class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback 
         lifecycleScope.launch {
             viewModel.emiRateOptionList.collectLatest {
                 emiOptionAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun observeBankAccountOptionList() {
+        lifecycleScope.launch {
+            viewModel.userBankAccountOptionList.collectLatest {
+                bankAccountOptionAdapter.submitList(it)
             }
         }
     }
@@ -168,11 +190,25 @@ class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback 
         binding.stackItem3.setCallback(stackCallbackBankAccountSelect)
     }
 
+    private fun bindAddBankAccountCta() {
+        binding.expandedSelectBankAccount.addAccountCta.setOnClickListener {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.not_implemented),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
     override fun onSelected(selectedOption: EmiRateOptionPresentationItem) {
         viewModel.onEmiRateOptionSelected(selectedOption)
     }
 
     override fun onClickDetail(selectedOption: EmiRateOptionPresentationItem) {
         Toast.makeText(context, getString(R.string.not_implemented), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onSelected(selectedOption: UserBankAccountItemPresentation) {
+        viewModel.onBankAccountSelected(selectedOption)
     }
 }

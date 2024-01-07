@@ -101,6 +101,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/cta_button_background"
+        android:paddingVertical="12dp"
         android:text="@string/proceed_to_emi_option"
         android:textAllCaps="false"
         android:textColor="@color/white"

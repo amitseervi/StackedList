@@ -5,9 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.amit.stackedlist.model.ui.EmiRateOptionItem
+import com.amit.stackedlist.model.EmiRateOptionItem
+import com.amit.stackedlist.model.UserBankAccountItem
 import com.amit.stackedlist.model.ui.EmiRateOptionPresentationItem
+import com.amit.stackedlist.model.ui.UserBankAccountItemPresentation
 import com.amit.stackedlist.repository.EmiRateOptionsRepository
+import com.amit.stackedlist.repository.UserBankAccountRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -21,11 +24,17 @@ import java.util.Currency
 
 class HomeViewModel(
     private val application: Application,
-    private val emiRateOptionRepository: EmiRateOptionsRepository
+    private val emiRateOptionRepository: EmiRateOptionsRepository,
+    private val bankAccountRepository: UserBankAccountRepository
 ) : AndroidViewModel(application) {
 
     private val _selectedCreditValue: MutableStateFlow<Int> = MutableStateFlow(0)
     private val _emiRateOptionList: MutableStateFlow<List<EmiRateOptionItem>> =
+        MutableStateFlow(
+            emptyList()
+        )
+
+    private val _bankAccountOptionList: MutableStateFlow<List<UserBankAccountItem>> =
         MutableStateFlow(
             emptyList()
         )
@@ -74,6 +83,22 @@ class HomeViewModel(
                 transformEmiRateOptionToPresentation(
                     optionData,
                     selectedOption == optionData.id
+                )
+            }
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly, emptyList()
+        )
+
+    val userBankAccountOptionList: StateFlow<List<UserBankAccountItemPresentation>>
+        get() = combine(
+            _bankAccountOptionList,
+            _selectedBankAccountOptionId
+        ) { optionDataList, selectedOption ->
+            optionDataList.map { optionData ->
+                transformUserBankAccountOptionItem(
+                    optionData,
+                    selectedOption == optionData.accountId
                 )
             }
         }.stateIn(
@@ -135,6 +160,7 @@ class HomeViewModel(
         _userFormStep.update {
             UserFormStep.SelectBankAccount
         }
+        refreshUserBankAccountList()
     }
 
     private fun refreshEmiRateOptionList() {
@@ -144,17 +170,27 @@ class HomeViewModel(
         }
     }
 
+    private fun refreshUserBankAccountList() {
+        viewModelScope.launch {
+            val bankOptions = bankAccountRepository.fetchUserBankAccounts()
+            _bankAccountOptionList.update {
+                bankOptions
+            }
+        }
+    }
+
     fun onEmiRateOptionSelected(emiRateOptionItem: EmiRateOptionPresentationItem) {
         _emiRateSelectedOption.update { emiRateOptionItem.id }
     }
 
     class Factory(
         private val application: Application,
-        private val emiRateOptionsRepository: EmiRateOptionsRepository
+        private val emiRateOptionsRepository: EmiRateOptionsRepository,
+        private val bankAccountRepository: UserBankAccountRepository
     ) :
         ViewModelProvider.AndroidViewModelFactory(application) {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return HomeViewModel(application, emiRateOptionsRepository) as T
+            return HomeViewModel(application, emiRateOptionsRepository, bankAccountRepository) as T
         }
     }
 
@@ -168,9 +204,31 @@ class HomeViewModel(
                 R.string.emi_per_month_duration,
                 emiRateOptionItem.duration.toString()
             ),
-            amountPerMonth = currencyFormatter.format(emiRateOptionItem.amountPerMonth),
+            amountPerMonth = application.getString(
+                R.string.per_month_amount,
+                currencyFormatter.format(emiRateOptionItem.amountPerMonth)
+            ),
             selected = selected
         )
+    }
+
+    private fun transformUserBankAccountOptionItem(
+        userBankAccountItem: UserBankAccountItem,
+        selected: Boolean
+    ): UserBankAccountItemPresentation {
+        return UserBankAccountItemPresentation(
+            bankLogo = userBankAccountItem.bankLogo,
+            accountName = userBankAccountItem.accountName,
+            bankName = userBankAccountItem.bankName,
+            accountId = userBankAccountItem.accountId,
+            selected = selected
+        )
+    }
+
+    fun onBankAccountSelected(selectedOption: UserBankAccountItemPresentation) {
+        _selectedBankAccountOptionId.update {
+            selectedOption.accountId
+        }
     }
 
     sealed interface UserFormStep {

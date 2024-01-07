@@ -1,4 +1,4 @@
-package com.amit.stackedlist.model.ui
+package com.amit.stackedlist.model
 
 data class EmiRateOptionItem(
     val id: String,
