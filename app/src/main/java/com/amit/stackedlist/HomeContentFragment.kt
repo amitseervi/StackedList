@@ -65,10 +65,9 @@ class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback,
             DummyEmiRateOptionRepository(),
             DummyUserBankAccountRepository()
         )
-        binding.ctaButton.setOnClickListener {
-            binding.stackContainer.showNextChild()
-        }
 
+        bindFormCtaClick()
+        observeCreditLimitWarning()
         bindCreditExpandedView()
         observeCreditSelection()
         observeCtaMessage()
@@ -80,6 +79,20 @@ class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback,
         observeBankAccountOptionList()
         observeEmiSelectedRateOption()
         bindAddBankAccountCta()
+    }
+
+    private fun bindFormCtaClick() {
+        binding.ctaButton.setOnClickListener {
+            binding.stackContainer.showNextChild()
+        }
+    }
+
+    private fun observeCreditLimitWarning() {
+        lifecycleScope.launch {
+            viewModel.creditSelectWarningMessage.collectLatest {
+                binding.expandedEmiSelect.warningMessage.text = it
+            }
+        }
     }
 
 

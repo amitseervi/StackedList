@@ -22,6 +22,8 @@ import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.Currency
 
+const val MAX_CREDIT_AMOUNT = 100000
+
 class HomeViewModel(
     private val application: Application,
     private val emiRateOptionRepository: EmiRateOptionsRepository,
@@ -58,8 +60,10 @@ class HomeViewModel(
             }
         }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
-    val selectedBankAccountOptionId: StateFlow<String?>
-        get() = _selectedBankAccountOptionId
+    private val _creditSelectWarningMessage: MutableStateFlow<String> = MutableStateFlow("")
+    val creditSelectWarningMessage: StateFlow<String>
+        get() = _creditSelectWarningMessage
+
 
     val ctaButtonMessage: StateFlow<String>
         get() = _userFormStep.map {
@@ -133,7 +137,19 @@ class HomeViewModel(
 
     fun onCreditInputNumberPressed(numberValue: Int) {
         _selectedCreditValue.update {
-            ((it * 10) + numberValue).coerceAtMost(1000000)
+            val newValue = (it * 10) + numberValue
+            if (newValue <= MAX_CREDIT_AMOUNT) {
+                _creditSelectWarningMessage.update { "" }
+                newValue
+            } else {
+                _creditSelectWarningMessage.update {
+                    application.getString(
+                        R.string.max_credit_amount_warning,
+                        currencyFormatter.format(MAX_CREDIT_AMOUNT)
+                    )
+                }
+                it
+            }
         }
     }
 
@@ -141,6 +157,7 @@ class HomeViewModel(
         _selectedCreditValue.update {
             it / 10
         }
+        _creditSelectWarningMessage.update { "" }
     }
 
     fun onEmiValueSelectSectionVisible() {

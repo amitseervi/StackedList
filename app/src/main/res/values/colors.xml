@@ -11,4 +11,5 @@
     <color name="cta_background_color_disable">#999999</color>
     <color name="input_keyboard_background">#DCF2F1</color>
     <color name="input_keyboard_text_color">#0F1035</color>
+    <color name="credit_limit_warning">#FFA4B2</color>
 </resources>

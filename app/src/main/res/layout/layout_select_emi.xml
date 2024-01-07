@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@color/black">
+    tools:background="@color/stack_item_one_bg_color">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/g1"
@@ -51,12 +51,24 @@
         android:background="@drawable/credit_input_amount_background"
         android:paddingHorizontal="24dp"
         android:paddingVertical="8dp"
-        android:text="$ 1,00,000"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/g2"
         app:layout_constraintStart_toStartOf="@id/g1"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:text="$ 1,00,000" />
+
+    <TextView
+        android:id="@+id/warning_message"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/credit_limit_warning"
+        app:layout_constraintEnd_toEndOf="@id/g2"
+        app:layout_constraintStart_toStartOf="@id/g1"
+        app:layout_constraintTop_toBottomOf="@+id/credit_input_tv"
+        tools:text="@string/max_credit_amount_warning" />
 
     <GridLayout
         android:layout_width="wrap_content"
@@ -65,7 +77,7 @@
         android:columnCount="3"
         app:layout_constraintEnd_toEndOf="@id/g2"
         app:layout_constraintStart_toStartOf="@id/g1"
-        app:layout_constraintTop_toBottomOf="@+id/credit_input_tv">
+        app:layout_constraintTop_toBottomOf="@+id/warning_message">
 
         <FrameLayout
             android:id="@+id/number_1"
@@ -263,8 +275,8 @@
                 android:layout_gravity="center"
                 android:src="@drawable/back_space"
                 android:textAlignment="center"
-                app:tint="@color/input_keyboard_text_color"
-                android:textSize="28sp" />
+                android:textSize="28sp"
+                app:tint="@color/input_keyboard_text_color" />
         </FrameLayout>
 
 
