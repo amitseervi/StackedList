@@ -4,15 +4,15 @@
     <color name="white">#FFFFFFFF</color>
 
 
-    <color name="stack_item_one_bg_color">#2D3250</color>
-    <color name="stack_item_two_bg_color">#424769</color>
-    <color name="stack_item_three_bg_color">#365486</color>
-    <color name="cta_background_color">#525CEB</color>
-    <color name="cta_background_color_disable">#999999</color>
-    <color name="input_keyboard_background">#DCF2F1</color>
+    <color name="stack_item_one_bg_color">#27374D</color>
+    <color name="stack_item_two_bg_color">#354A68</color>
+    <color name="stack_item_three_bg_color">#47638B</color>
+    <color name="cta_background_color">#00A9FF</color>
+    <color name="cta_background_color_disable">#aaaaaa</color>
+    <color name="input_keyboard_background">#DDE6ED</color>
     <color name="input_keyboard_text_color">#0F1035</color>
     <color name="credit_limit_warning">#FFA4B2</color>
-    <color name="emi_rate_option_background">#696442</color>
+    <color name="emi_rate_option_background">#3B5599</color>
     <color name="emi_rate_option_text_color">@color/white</color>
-    <color name="rate_option_detail_link_text">#eead11</color>
+    <color name="rate_option_detail_link_text">#8CABFF</color>
 </resources>

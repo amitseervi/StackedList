@@ -10,6 +10,7 @@ import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.view.children
 import com.amit.stackedlist.R
+import kotlin.math.roundToInt
 
 class StackContainer @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -113,10 +114,21 @@ class StackContainer @JvmOverloads constructor(
             return false
         }
         if (ev.action == MotionEvent.ACTION_DOWN) {
-            showPreviousChild()
+            showPreviousChild(getCollapsedIndexForTouchY(ev.y.roundToInt()))
             return true
         }
         return false
+    }
+
+    private fun getCollapsedIndexForTouchY(y: Int): Int {
+        var ans = 0
+        stackItems.forEachIndexed { index, view ->
+            if (y < measuredHeight - view.measuredHeight) {
+                return ans
+            }
+            ans = index
+        }
+        return ans
     }
 
     fun getCurrentStackPosition(): Int {
@@ -156,6 +168,51 @@ class StackContainer @JvmOverloads constructor(
         animator.start()
         return true
     }
+
+    fun showPreviousChild(index: Int): Boolean {
+        val currentIndex = mCurrentItemIndex
+        if (currentIndex == 0) {
+            return false
+        }
+        if (index < 0) {
+            return false
+        }
+        if (index >= currentIndex) {
+            return false
+        }
+        mCurrentAnimator?.let { currentAnimator ->
+            if (currentAnimator.isRunning) {
+                return false
+            }
+        }
+        val animator = ValueAnimator.ofFloat(1f, 0f)
+        mCurrentAnimator = animator
+        animator.duration = animationDuration
+        animator.addUpdateListener {
+            val animationValue: Float = it.animatedValue as Float
+            for (i in (index + 1)..currentIndex) {
+                stackItems[i].setAnimationValue(animationValue)
+            }
+            stackItems[index].setAnimationValue(1 + animationValue)
+        }
+        animator.doOnStart {
+            stackItems[index].showExpandedView()
+        }
+        animator.doOnEnd {
+            stackItems[index].hideCollapsedView()
+            stackItems[index].onExpanded()
+            for (i in (index + 1)..currentIndex) {
+                stackItems[i].hideExpandedView()
+                stackItems[i].visibility = View.GONE
+                stackItems[i].onHidden()
+            }
+            mCurrentItemIndex = index
+            notifyPositionChange()
+        }
+        animator.start()
+        return true
+    }
+
 
     override fun onFinishInflate() {
         super.onFinishInflate()

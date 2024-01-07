@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/headline"
-        style="@style/TextAppearance.AppCompat.Display1"
+        style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/how_do_you_wish_to_pay"
