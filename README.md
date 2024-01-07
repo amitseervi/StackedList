@@ -63,7 +63,14 @@ open the application code in your Android studio. click on run.
 
 for the last item in the stackContainer collapsedState view is optional and can be skipped.
 
-## art
+## Art
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/000.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/001.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/002.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/003.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/004.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/005.png)
+![alt text](https://github.com/amitseervi/StackedList/blob/main/art/scaled_images/006.png)
 
 
 ## Guidelines
