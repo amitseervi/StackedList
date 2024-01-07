@@ -33,5 +33,6 @@
     <string name="select_bank_account_desc">Amount will be credit to this account and emi will also be deducted from this bank account</string>
     <string name="add_account">Add Account</string>
     <string name="max_credit_amount_warning">Maximum Credit amount limited to %s</string>
+    <string name="press_back_once_more_to_exit">Press back once more to exit</string>
 
 </resources>

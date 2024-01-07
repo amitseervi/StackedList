@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -16,16 +17,23 @@ import com.amit.stackedlist.model.ui.EmiRateOptionPresentationItem
 import com.amit.stackedlist.model.ui.UserBankAccountItemPresentation
 import com.amit.stackedlist.repository.DummyEmiRateOptionRepository
 import com.amit.stackedlist.repository.DummyUserBankAccountRepository
+import com.amit.stackedlist.view.StackContainer
 import com.amit.stackedlist.view.StackItemView
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback,
-    BankAccountOptionAdapter.ViewHolderCallback {
+    BankAccountOptionAdapter.ViewHolderCallback, StackContainer.OnPositionChangeCallback {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var factory: HomeViewModel.Factory
     private val viewModel: HomeViewModel by lazy {
         ViewModelProvider(this@HomeContentFragment, factory)[HomeViewModel::class.java]
+    }
+
+    private val backPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            binding.stackContainer.showPreviousChild()
+        }
     }
 
     private val stackCallbackEmiCreditSelect = object : StackItemView.Callback {
@@ -66,6 +74,7 @@ class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback,
             DummyUserBankAccountRepository()
         )
 
+        bindPositionCallbackToStackContainer()
         bindFormCtaClick()
         observeCreditLimitWarning()
         bindCreditExpandedView()
@@ -79,11 +88,23 @@ class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback,
         observeBankAccountOptionList()
         observeEmiSelectedRateOption()
         bindAddBankAccountCta()
+        bindBackPressListener()
+    }
+
+    private fun bindBackPressListener() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner, backPressedCallback
+        )
+    }
+
+    private fun bindPositionCallbackToStackContainer() {
+        binding.stackContainer.setPositionChangeCallback(this)
     }
 
     private fun bindFormCtaClick() {
         binding.ctaButton.setOnClickListener {
             binding.stackContainer.showNextChild()
+
         }
     }
 
@@ -223,5 +244,10 @@ class HomeContentFragment : Fragment(), EmiRateOptionAdapter.ViewHolderCallback,
 
     override fun onSelected(selectedOption: UserBankAccountItemPresentation) {
         viewModel.onBankAccountSelected(selectedOption)
+    }
+
+    /*Inform of any position change in stack containers*/
+    override fun onPositionChange(position: Int) {
+        backPressedCallback.isEnabled = (position > 0)
     }
 }

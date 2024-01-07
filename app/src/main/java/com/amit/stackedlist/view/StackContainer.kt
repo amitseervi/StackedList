@@ -18,6 +18,7 @@ class StackContainer @JvmOverloads constructor(
     private var animationDuration: Long
     private var mCurrentAnimator: ValueAnimator? = null
     private var mCurrentItemIndex = 0
+    private var mOnPositionChangeCallback: OnPositionChangeCallback? = null
 
     init {
         val typedArray =
@@ -81,9 +82,14 @@ class StackContainer @JvmOverloads constructor(
             stackItems[currentIndex].onCollapsed()
             stackItems[currentIndex + 1].onExpanded()
             mCurrentItemIndex = currentIndex + 1
+            notifyPositionChange()
         }
         animator.start()
         return true
+    }
+
+    private fun notifyPositionChange() {
+        mOnPositionChangeCallback?.onPositionChange(mCurrentItemIndex)
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
@@ -111,6 +117,10 @@ class StackContainer @JvmOverloads constructor(
             return true
         }
         return false
+    }
+
+    fun getCurrentStackPosition(): Int {
+        return mCurrentItemIndex
     }
 
     fun showPreviousChild(): Boolean {
@@ -141,6 +151,7 @@ class StackContainer @JvmOverloads constructor(
             stackItems[currentIndex].onHidden()
             stackItems[currentIndex - 1].onExpanded()
             mCurrentItemIndex = currentIndex - 1
+            notifyPositionChange()
         }
         animator.start()
         return true
@@ -207,5 +218,13 @@ class StackContainer @JvmOverloads constructor(
             collapsedHeightSum += stackChildItemView.measuredCollapsedHeight
         }
         setMeasuredDimension(selectedWidth, selectedHeight)
+    }
+
+    fun setPositionChangeCallback(onPositionChangeCallback: OnPositionChangeCallback) {
+        this.mOnPositionChangeCallback = onPositionChangeCallback
+    }
+
+    interface OnPositionChangeCallback {
+        fun onPositionChange(position: Int)
     }
 }

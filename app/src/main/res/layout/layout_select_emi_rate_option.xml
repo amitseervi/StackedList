@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingVertical="24dp"
-    tools:background="@color/black">
+    tools:background="@color/stack_item_two_bg_color">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/g1"
